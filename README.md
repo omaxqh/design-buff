@@ -108,27 +108,64 @@ Design Buff 会输出一套人机分账、各司其职的评审结果：
 
 ## 安装方式
 
-1. 把整个文件夹复制到你的 Codex skills 目录，并命名为 `design-buff`。
-2. 运行时保持 Skill 包本身只读，不要把评审产物写回这个仓库。
-3. 使用时从被评审项目的根目录发起，而不是从 Skill 仓库内部运行。
+### Codex
 
-### 安装到 Claude Code / Cursor
+安装命令:
 
-如果你想把 Design Buff 装到其他 Agent CLI 或 IDE，可直接运行:
+```bash
+python3 scripts/install_adapter.py codex
+```
+
+命令说明:
+
+- 默认安装到 `${CODEX_HOME:-~/.codex}/skills/design-buff`
+- 如果你想装到自定义位置，可加 `--target /path/to/skills/design-buff`
+- 这条命令会复制完整 Skill 包，而不是只写一段规则文本
+
+使用方式:
+
+- 在 Codex 里直接提设计评审需求，并附上 Figma、截图或材料
+- 想明确触发时，直接写 `$design-buff`
+
+### Claude Code
+
+安装命令:
 
 ```bash
 python3 scripts/install_adapter.py claude-code --scope project --target /path/to/project
 python3 scripts/install_adapter.py claude-code --scope user
+```
+
+命令说明:
+
+- `--scope project` 会写入 `<project>/.claude/CLAUDE.md` 和 `<project>/.claude/commands/design-buff-review.md`
+- `--scope user` 会写入 `~/.claude/CLAUDE.md` 和 `~/.claude/commands/design-buff-review.md`
+- 如果原来已经有 `CLAUDE.md`，脚本会以托管区块方式追加，不会整份覆盖
+
+使用方式:
+
+- 在已安装的项目里直接运行 `/design-buff-review`
+- 也可以补一个参数，例如 `/design-buff-review 重点看首步分流`
+
+### Cursor
+
+安装命令:
+
+```bash
 python3 scripts/install_adapter.py cursor --target /path/to/project
 python3 scripts/install_adapter.py generic-agents --target /path/to/project
 ```
 
-这四条命令分别对应:
+命令说明:
 
-- 给某个项目安装 Claude Code 版本
-- 给当前用户安装 Claude Code 版本
-- 给某个项目安装 Cursor IDE 规则
-- 给某个项目安装通用 `AGENTS.md` 入口
+- 第一条会写入 `<project>/.cursor/rules/design-buff-review.mdc`
+- 第二条是可选项，用于给 Cursor CLI 或其他会读取 `AGENTS.md` 的 Agent 补一个通用入口
+- Cursor 本身没有像 Claude Code 那样的 `/design-buff-review` slash command，这里主要依赖规则触发
+
+使用方式:
+
+- 在 Cursor Agent 里直接请求设计评审，并附上 Figma、截图或产品材料
+- 如果你想提高触发稳定性，可以在请求里显式写 `Use Design Buff to review this flow`
 
 ## 运行产物
 

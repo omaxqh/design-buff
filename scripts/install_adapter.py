@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import argparse
+import os
+import shutil
 from pathlib import Path
 
 
@@ -74,6 +76,24 @@ def render_agents_block(portable: str) -> str:
     return wrap_managed_block("Design Buff", intro + portable)
 
 
+def copy_repo_tree(source: Path, destination: Path) -> None:
+    ignore = shutil.ignore_patterns(".git", ".DS_Store", "__pycache__", "*.pyc", ".pytest_cache")
+    shutil.copytree(source, destination, dirs_exist_ok=True, ignore=ignore)
+
+
+def default_codex_skill_dir() -> Path:
+    codex_home = os.environ.get("CODEX_HOME")
+    base = Path(codex_home).expanduser() if codex_home else Path.home() / ".codex"
+    return base / "skills" / "design-buff"
+
+
+def install_codex(root: Path, target: Path | None) -> list[Path]:
+    destination = target if target is not None else default_codex_skill_dir()
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    copy_repo_tree(root, destination)
+    return [destination]
+
+
 def install_claude(root: Path, scope: str, target: Path | None) -> list[Path]:
     portable = read_portable_instructions(root)
     if scope == "user":
@@ -111,7 +131,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Install Design Buff adapters into another project or user config.")
     parser.add_argument(
         "platform",
-        choices=["claude-code", "cursor", "generic-agents"],
+        choices=["codex", "claude-code", "cursor", "generic-agents"],
         help="Target runtime adapter to install.",
     )
     parser.add_argument(
@@ -135,7 +155,9 @@ def main() -> None:
     if args.platform != "claude-code" and args.scope != "project":
         raise SystemExit("Only claude-code supports --scope user.")
 
-    if args.platform == "claude-code":
+    if args.platform == "codex":
+        written = install_codex(root, args.target.resolve() if args.target else None)
+    elif args.platform == "claude-code":
         written = install_claude(root, args.scope, args.target.resolve() if args.target else None)
     elif args.platform == "cursor":
         written = install_cursor(root, args.target.resolve() if args.target else None)

@@ -4,58 +4,88 @@
 
 当前适配目标:
 
-- `Codex`: 直接使用原生 Skill
-- `Claude Code`: 使用 `CLAUDE.md` 和 `.claude/commands/`
-- `Cursor IDE`: 使用 `.cursor/rules/*.mdc`
-- `Cursor CLI` 与其他兼容 Agent: 使用项目根目录 `AGENTS.md`
+- `Codex`
+- `Claude Code`
+- `Cursor`
+- 其他会读取 `AGENTS.md` 的兼容 Agent
 
 这层适配遵循两个原则:
 
 1. 核心方法只保留一套，避免多份 prompt 漂移
 2. 平台差异只处理入口和载体，不改 Design Buff 的评审标准
 
-## 安装脚本
+## Codex
 
-仓库提供一个安装脚本，把精简后的可移植指令写入目标项目:
+安装命令:
+
+```bash
+python3 scripts/install_adapter.py codex
+```
+
+命令说明:
+
+- 默认安装到 `${CODEX_HOME:-~/.codex}/skills/design-buff`
+- 如果你想装到自定义位置，可改成 `python3 scripts/install_adapter.py codex --target /path/to/skills/design-buff`
+- 这条命令会复制整个 Skill 包，适合直接给 Codex 原生 Skill 系统使用
+
+使用方式:
+
+- 在 Codex 里直接发起设计评审请求
+- 如需明确点名，直接写 `$design-buff`
+
+## Claude Code
+
+安装命令:
 
 ```bash
 python3 scripts/install_adapter.py claude-code --scope project --target /path/to/project
 python3 scripts/install_adapter.py claude-code --scope user
+```
+
+命令说明:
+
+- 项目级安装会写入 `<project>/.claude/CLAUDE.md`
+- 同时生成 `<project>/.claude/commands/design-buff-review.md`
+- 用户级安装会写入 `~/.claude/CLAUDE.md` 和 `~/.claude/commands/design-buff-review.md`
+- 如果原来已经有 `CLAUDE.md`，脚本会以托管区块追加，不会整份覆盖
+
+使用方式:
+
+- 在项目里直接运行 `/design-buff-review`
+- 也可以补聚焦参数，例如 `/design-buff-review 重点看协议页和失败回退`
+
+## Cursor
+
+安装命令:
+
+```bash
 python3 scripts/install_adapter.py cursor --target /path/to/project
 python3 scripts/install_adapter.py generic-agents --target /path/to/project
 ```
 
-安装策略:
+命令说明:
 
-- `claude-code`
-  - 项目级: 写入 `<project>/.claude/CLAUDE.md`
-  - 用户级: 写入 `~/.claude/CLAUDE.md`
-  - 同时生成自定义命令 `.claude/commands/design-buff-review.md`
-- `cursor`
-  - 写入 `<project>/.cursor/rules/design-buff-review.mdc`
-- `generic-agents`
-  - 写入 `<project>/AGENTS.md`
+- 第一条会写入 `<project>/.cursor/rules/design-buff-review.mdc`
+- 第二条是可选项，用于补 `<project>/AGENTS.md`，方便 Cursor CLI 或其他兼容 Agent 读取
+- Cursor 没有和 Claude Code 完全对应的自定义 slash command，这里主要依赖规则触发
 
-脚本会使用带标记的托管区块更新 `CLAUDE.md` 或 `AGENTS.md`，不会粗暴覆盖整个文件。专用命令文件和规则文件则直接以 `design-buff-review` 这个固定文件名写入。
+使用方式:
 
-## 使用建议
+- 在 Cursor Agent 中直接请求设计评审
+- 如需提高触发稳定性，可以明确写 `Use Design Buff to review this flow`
 
-### Claude Code
+## 通用 AGENTS 入口
 
-- 安装项目级适配后，直接在项目里使用 `/design-buff-review`
-- 如果团队已经有自己的 `CLAUDE.md`，脚本会把 Design Buff 追加成一个托管区块
-- 需要持久化使用时，优先把项目级适配文件提交到仓库
+安装命令:
 
-### Cursor IDE
+```bash
+python3 scripts/install_adapter.py generic-agents --target /path/to/project
+```
 
-- 安装后，`design-buff-review.mdc` 会作为一个 `Agent Requested` 规则存在于 `.cursor/rules/`
-- 在设计评审、Figma、截图、转化流程诊断这类请求里，Cursor Agent 可以自动调用这条规则
-- 如果你想让 Cursor CLI 也稳定读取同一套入口，可以额外安装 `generic-agents`
+命令说明:
 
-### 通用 CLI / IDE
-
-- 对于会读取项目根目录 `AGENTS.md` 的工具，安装 `generic-agents` 即可
-- 如果工具本身支持更强的规则系统，再叠加对应平台适配会更稳
+- 会把 Design Buff 作为托管区块写入 `<project>/AGENTS.md`
+- 适合 Cursor CLI 和其他会读取 `AGENTS.md` 的 Agent 工具
 
 ## 官方依据
 
