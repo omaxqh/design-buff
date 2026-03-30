@@ -254,7 +254,7 @@ Rule of thumb:
     {
       "stable_id": "routing-self-diagnosis__90f948",
       "display_number": "ISSUE-001",
-      "title": "Routing depends on self-diagnosis",
+      "title": "Users must choose open vs bind before they know whether they already have a Marriott account",
       "category": "scenario and fit",
       "severity": "high",
       "confidence": "high",
@@ -263,7 +263,7 @@ Rule of thumb:
       "problem_summary": "entry routing asks users to infer backend state",
       "impact_summary": "causes wrong-path failure and trust loss",
       "recommendation_summary": "prefer system routing or a clear uncertainty path",
-      "discussion_prompts": ["Can the system pre-check account status?"]
+      "discussion_prompts": ["Can the system check account status after authorization?"]
     }
   ],
   "priorities": {
@@ -272,7 +272,7 @@ Rule of thumb:
     "open_questions": [
       {
         "question_id": "q_001",
-        "title": "Can the system pre-check account status?",
+        "title": "Can the system check account status after authorization?",
         "status": "open",
         "related_issue_ids": ["routing-self-diagnosis__90f948"]
       }
@@ -280,7 +280,7 @@ Rule of thumb:
     "next_actions": [
       {
         "action_id": "a_001",
-        "title": "Add a clearer routing decision path",
+        "title": "Rewrite the first decision step so users do not have to guess their account state",
         "status": "pending",
         "related_issue_ids": ["routing-self-diagnosis__90f948"]
       }

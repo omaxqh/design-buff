@@ -12,6 +12,7 @@ This repository README is only a GitHub entry point for humans. The runtime cont
 - reviews flows from business and UX angles instead of surface-only visual critique
 - prefers layered Figma reads when a precise Figma URL or selection is available
 - reconstructs background, goals, target users, and unknowns before critique
+- runs an explicit three-flow continuity check across journey flow, operation flow, and mental flow
 - outputs a durable HTML review artifact plus structured sidecar state
 - keeps runtime output outside the skill package
 

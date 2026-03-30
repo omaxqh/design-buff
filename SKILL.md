@@ -138,6 +138,7 @@ Before critique, determine what the design is trying to do.
 Review for product and UX rationality, not surface beauty.
 
 - use `references/review-playbook.md` for critique dimensions, mandatory passes, issue anatomy, severity, confidence, stable issue identity, and resolution guidance
+- explicitly run the `three-flow continuity review` on at least one key task path so the report checks journey flow, operation flow, and mental flow as one continuous chain
 - when the user selects an issue, continue into revision guidance rather than stopping at critique
 - use `scripts/make_issue_id.py` when you need a deterministic mixed-format stable issue ID
 
@@ -159,6 +160,7 @@ Render three outputs from the same canonical review object:
 
 - use `references/report-contract.md` for report language, chat order, HTML markers, section content, and hidden scratch rules
 - use `scripts/detect_report_language.py` when the language signal is mixed or unclear
+- before persisting `report.html`, run one plain-language pass so the human report reads like a design lead memo, not a field dump or translated schema
 
 ### 7. Persist State
 

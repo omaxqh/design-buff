@@ -74,9 +74,30 @@ Review the draft across these dimensions:
 Always run these passes on the most important path:
 
 - `cognitive and copy load check`
-- `continuity review` across journey, interaction, and mental flow
+- `three-flow continuity review` across journey flow, operation flow, and mental flow
 - `scenario stress test` against the most relevant failure or pressure cases
 - `micro-detail pass` when wording, icon semantics, or state coverage matters
+
+### Three-Flow Continuity Review
+
+For at least one key task path, explicitly inspect whether these three flows stay aligned:
+
+- `journey flow`: whether the macro task path still holds from entry to outcome
+- `operation flow`: whether each concrete action and system response stays clear and continuous
+- `mental flow`: whether user understanding, certainty, and trust keep moving forward instead of collapsing mid-path
+
+This pass exists to catch continuity failures that do not show up when pages are judged one by one.
+
+Check:
+
+- whether the design is locally correct page by page but broken as one complete task chain
+- whether the macro path holds, the concrete actions stay smooth, and the user feels more certain rather than less certain
+- whether the three flows support each other or work against each other
+- exactly where the break happens and what kind of break it is
+
+For complex flows, review 2-3 key paths. Do not map every page exhaustively unless the user asks for that level of audit.
+
+In the human HTML report, prefer one stage-aligned vertical timeline over three long abstract flow cards. Each node should write only the real issue blocks that matter, and each block should say `problem + fix` in plain language.
 
 ## Human Issue Anatomy
 
@@ -101,6 +122,59 @@ Each issue should at minimum cover:
 - `likely_consequence`
 - `recommended_direction`
 - `discussion_prompts`
+
+## Human Writing Rules
+
+The machine object may stay structured. The HTML report must not read like the schema.
+
+### Title Rules
+
+Issue titles are for human reading first and tracking second.
+
+- write the title so a designer can understand it on first read
+- prefer concrete subject + concrete problem + visible consequence
+- in Chinese, prefer natural subject-verb-object phrasing over compressed abstract nouns
+- if a title needs explanation before it becomes understandable, rewrite it
+- keep `stable_id` responsible for machine precision; do not force the title to do machine work
+
+Avoid titles like:
+
+- `首步路径选择依赖用户自诊断账号状态`
+- `分流策略与用户心智存在错位`
+- `认知负担过重`
+
+Prefer titles like:
+
+- `用户可能不知道自己是否注册过万豪，却必须先选开通还是绑定`
+- `页面把业务分流直接丢给用户判断，选错后要到失败页才发现`
+- `协议页把必选授权和营销偏好混在一起，用户很难一眼分清`
+
+### Paragraph Rules
+
+For the human report:
+
+- do not expose `what_i_see`, `who_it_hurts`, `likely_consequence`, `discussion_prompts` as rigid field labels by default
+- combine them into one causal paragraph that explains what is happening, why it matters, and who is affected
+- follow with one paragraph that explains the correction direction in plain language
+- merge discussion prompts into a short `需要确认` paragraph when they materially affect the recommendation
+- keep evidence visible, but do not let node IDs and tool steps dominate the reading flow
+
+### Chinese Writing Rules
+
+When the report language is `zh-CN`:
+
+- write like a strong Chinese-speaking design lead, not like translated English analysis
+- prefer short complete sentences over stacked modifier phrases
+- prefer user-known facts over internal product taxonomy
+- explain abstract UX terms through visible behavior
+- use terminology only when it helps, not as a substitute for explanation
+- do not use PM jargon such as `结构包` or `整改包` in the human-facing report
+
+Examples:
+
+- instead of `用户自诊断账号状态`, write `用户要先自己判断自己到底算未注册还是已注册`
+- instead of `路径分流`, write `先选开通还是绑定`
+- instead of `认知负担`, write `用户得自己多想一步，而且很容易想错`
 
 ## Severity Guidance
 

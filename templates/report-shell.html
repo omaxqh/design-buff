@@ -36,6 +36,7 @@
       margin: 0;
       color: var(--ink);
       font-family: var(--sans);
+      font-size: 16px;
       line-height: 1.6;
       background:
         radial-gradient(circle at top left, rgba(164, 74, 47, 0.14), transparent 24%),
@@ -53,7 +54,9 @@
     .hero,
     .section,
     .issue-card,
-    .track-card {
+    .track-card,
+    .flow-card,
+    .timeline-card {
       border: 1px solid var(--line);
       background: var(--paper);
       box-shadow: var(--shadow-soft);
@@ -67,8 +70,16 @@
       padding: 28px;
       display: grid;
       gap: 24px;
-      grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.95fr);
+      grid-template-columns: minmax(0, 1.26fr) minmax(280px, 360px);
+      align-items: start;
       box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      display: flex;
+      flex-direction: column;
+      align-self: stretch;
+      min-height: 100%;
     }
 
     .hero::after {
@@ -105,18 +116,25 @@
     }
 
     .hero h1 {
-      margin: 12px 0 8px;
+      margin: 12px 0 24px;
       font-family: var(--serif);
-      font-size: clamp(40px, 5vw, 72px);
-      line-height: 0.95;
+      font-size: clamp(32px, 4.1vw, 58px);
+      line-height: 1.02;
       letter-spacing: -0.04em;
-      max-width: 10ch;
+      max-width: none;
     }
 
     .lede {
-      max-width: 60ch;
+      margin: 0;
+      max-width: none;
       font-size: 18px;
       color: var(--muted);
+    }
+
+    .chip-row {
+      margin-top: auto;
+      padding-top: 28px;
+      align-self: flex-start;
     }
 
     .hero-panel {
@@ -174,10 +192,9 @@
     }
 
     .section-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: end;
+      display: grid;
+      gap: 8px;
+      align-items: start;
       border-bottom: 1px solid var(--line);
       padding-bottom: 14px;
     }
@@ -186,8 +203,8 @@
     .priority-card h2 {
       margin: 0;
       font-family: var(--serif);
-      font-size: clamp(28px, 3vw, 42px);
-      line-height: 0.98;
+      font-size: clamp(24px, 2.6vw, 34px);
+      line-height: 1.06;
       letter-spacing: -0.03em;
     }
 
@@ -214,18 +231,21 @@
     }
 
     .panel h3 {
-      margin: 0 0 10px;
+      margin: 0 0 8px;
       font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-family: var(--mono);
-      color: var(--muted);
+      line-height: 1.6;
+      font-weight: 600;
+      letter-spacing: 0;
+      font-family: var(--sans);
+      color: var(--ink);
     }
 
     .panel p,
     .panel ul,
     .panel ol {
       margin: 0;
+      font-size: 16px;
+      line-height: 1.72;
     }
 
     .priority-card {
@@ -248,13 +268,15 @@
     }
 
     .issue-list,
-    .track-list {
+    .track-list,
+    .flow-list {
       display: grid;
       gap: 18px;
     }
 
     .issue-card,
-    .track-card {
+    .track-card,
+    .flow-card {
       border-radius: var(--radius-lg);
       padding: 22px;
       display: grid;
@@ -262,7 +284,8 @@
     }
 
     .issue-card header,
-    .track-card header {
+    .track-card header,
+    .flow-card header {
       display: flex;
       justify-content: space-between;
       gap: 16px;
@@ -271,8 +294,9 @@
       padding-bottom: 12px;
     }
 
-    .issue-card h3,
-    .track-card h3 {
+    .issue-card > header h3,
+    .track-card > header h3,
+    .flow-card > header h3 {
       margin: 0;
       font-size: 24px;
       line-height: 1.05;
@@ -301,6 +325,116 @@
       border-top: 1px solid rgba(76, 61, 50, 0.08);
     }
 
+    .timeline {
+      display: grid;
+      gap: 18px;
+    }
+
+    .timeline-node {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .timeline-stage {
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 10px;
+      align-items: start;
+      align-self: stretch;
+    }
+
+    .timeline-stage::after {
+      content: "";
+      grid-row: 3;
+      justify-self: start;
+      margin-left: 15px;
+      width: 1px;
+      height: calc(100% + 18px);
+      background: rgba(76, 61, 50, 0.14);
+    }
+
+    .timeline-node:last-child .timeline-stage::after {
+      display: none;
+    }
+
+    .timeline-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(164, 74, 47, 0.22);
+      background: var(--paper-strong);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .timeline-stage-text {
+      grid-row: 2;
+      display: grid;
+      gap: 4px;
+    }
+
+    .timeline-stage-title {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+
+    .timeline-stage-summary {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .timeline-card {
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .timeline-summary {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.72;
+      color: var(--ink);
+    }
+
+    .timeline-block {
+      display: grid;
+      gap: 8px;
+    }
+
+    .timeline-block + .timeline-block {
+      padding-top: 14px;
+      border-top: 1px solid rgba(76, 61, 50, 0.08);
+    }
+
+    .timeline-block h3 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.6;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .timeline-block p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    .inline-label {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
     .label {
       font-family: var(--mono);
       font-size: 12px;
@@ -323,6 +457,18 @@
     }
 
     @media (max-width: 1080px) {
+      .priority-grid,
+      .actions-grid,
+      .two-col,
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
+      }
+    }
+
+    @media (max-width: 920px) {
       .hero,
       .priority-grid,
       .actions-grid,
@@ -330,11 +476,24 @@
       .three-col {
         grid-template-columns: 1fr;
       }
+      .timeline-node {
+        grid-template-columns: 104px minmax(0, 1fr);
+        gap: 12px;
+      }
+      .timeline-stage-text {
+        gap: 2px;
+      }
+      .timeline-stage-summary {
+        display: none;
+      }
+      .chip-row {
+        max-width: 100%;
+      }
     }
 
     @media (max-width: 720px) {
       .page { width: min(100vw - 20px, 100%); margin: 12px auto 42px; }
-      .hero, .section, .issue-card, .track-card, .priority-card { padding: 18px; }
+      .hero, .section, .issue-card, .track-card, .flow-card, .timeline-card, .priority-card { padding: 18px; }
       .hero h1 { max-width: none; }
       .split-list .row { grid-template-columns: 1fr; }
     }
@@ -343,7 +502,7 @@
 <body data-design-buff-report="v1">
   <main class="page">
     <section class="hero" id="review-overview">
-      <div>
+      <div class="hero-main">
         <span class="eyebrow">{{report_mode_label}}</span>
         <h1>{{project_name}}</h1>
         <p class="lede">{{overall_diagnosis}}</p>
@@ -375,7 +534,6 @@
     <section class="section" id="changes-since-last-review">
       <div class="section-header">
         <h2>{{changes_title}}</h2>
-        <p>{{changes_summary}}</p>
       </div>
       <div class="three-col">
         <div class="panel"><h3>{{new_issues_label}}</h3><p>{{new_issues}}</p></div>
@@ -387,23 +545,28 @@
     <section class="priority-card" id="highest-priority-issue">
       <div class="section-header">
         <h2>{{highest_priority_title}}</h2>
-        <p>{{highest_priority_why_first}}</p>
       </div>
       <div class="priority-grid">
         <div class="split-list">
-          <div class="row"><div class="label">{{issue_label}}</div><div>{{highest_priority_display_number}} · {{highest_priority_stable_id}}</div></div>
-          <div class="row"><div class="label">{{severity_label}}</div><div>{{highest_priority_severity}} · {{highest_priority_confidence}}</div></div>
-          <div class="row"><div class="label">{{evidence_label}}</div><div>{{highest_priority_evidence_basis}}</div></div>
-          <div class="row"><div class="label">{{what_i_see_label}}</div><div>{{highest_priority_what_i_see}}</div></div>
-          <div class="row"><div class="label">{{why_problem_label}}</div><div>{{highest_priority_why_it_is_a_problem}}</div></div>
+          <div class="panel">
+            <h3>{{issue_label}}</h3>
+            <p>{{highest_priority_display_number}} · {{highest_priority_title}}</p>
+            <p class="footer-note">{{highest_priority_stable_id}} · {{highest_priority_severity}} · {{highest_priority_confidence}}</p>
+          </div>
+          <div class="panel">
+            <h3>{{diagnosis_label}}</h3>
+            <p>{{highest_priority_diagnosis_paragraph}}</p>
+          </div>
+          <div class="panel">
+            <h3>{{why_first_label}}</h3>
+            <p>{{highest_priority_why_first_paragraph}}</p>
+          </div>
         </div>
         <div class="panel">
           <h3>{{recommended_direction_label}}</h3>
-          <p>{{highest_priority_recommended_direction}}</p>
-          <h3 style="margin-top:16px;">{{correction_paths_label}}</h3>
-          <p>{{highest_priority_correction_paths_summary}}</p>
-          <h3 style="margin-top:16px;">{{adopted_path_label}}</h3>
-          <p>{{highest_priority_adopted_or_recommended_path}}</p>
+          <p>{{highest_priority_recommended_direction_paragraph}}</p>
+          <h3 style="margin-top:16px;">{{need_to_confirm_label}}</h3>
+          <p>{{highest_priority_need_to_confirm}}</p>
         </div>
       </div>
     </section>
@@ -411,7 +574,6 @@
     <section class="section" id="background-and-evidence">
       <div class="section-header">
         <h2>{{background_title}}</h2>
-        <p>{{background_summary}}</p>
       </div>
       <div class="two-col">
         <div class="panel">{{background_and_evidence_html}}</div>
@@ -419,22 +581,9 @@
       </div>
     </section>
 
-    <section class="section" id="read-coverage">
-      <div class="section-header">
-        <h2>{{coverage_title}}</h2>
-        <p>{{coverage_summary}}</p>
-      </div>
-      <div class="three-col">
-        <div class="panel"><h3>{{fully_read_label}}</h3><p>{{fully_read_units}}</p></div>
-        <div class="panel"><h3>{{partially_read_label}}</h3><p>{{partially_read_units}}</p></div>
-        <div class="panel"><h3>{{tool_gaps_label}}</h3><p>{{open_tooling_gaps}}</p></div>
-      </div>
-    </section>
-
     <section class="section" id="full-review">
       <div class="section-header">
         <h2>{{full_review_title}}</h2>
-        <p>{{top_issues_summary}}</p>
       </div>
       <div class="issue-list" id="issue-list">
         <article class="issue-card">
@@ -443,43 +592,57 @@
             <div class="issue-meta">{{issue_category}} · {{issue_severity}} · {{issue_confidence}}</div>
           </header>
           <div class="split-list">
-            <div class="row"><div class="label">{{evidence_label}}</div><div>{{issue_evidence_basis}}</div></div>
-            <div class="row"><div class="label">{{what_i_see_label}}</div><div>{{issue_what_i_see}}</div></div>
-            <div class="row"><div class="label">{{who_it_hurts_label}}</div><div>{{issue_who_it_hurts}}</div></div>
-            <div class="row"><div class="label">{{consequence_label}}</div><div>{{issue_likely_consequence}}</div></div>
-            <div class="row"><div class="label">{{recommended_direction_label}}</div><div>{{issue_recommended_direction}}</div></div>
-            <div class="row"><div class="label">{{discussion_prompts_label}}</div><div>{{issue_discussion_prompts}}</div></div>
+            <div class="panel">
+              <h3>{{diagnosis_label}}</h3>
+              <p>{{issue_diagnosis_paragraph}}</p>
+            </div>
+            <div class="panel">
+              <h3>{{recommended_direction_label}}</h3>
+              <p>{{issue_recommended_direction_paragraph}}</p>
+            </div>
+            <div class="panel">
+              <h3>{{need_to_confirm_label}}</h3>
+              <p>{{issue_need_to_confirm}}</p>
+            </div>
           </div>
         </article>
+      </div>
+    </section>
+
+    <section class="section" id="three-flow-consistency">
+      <div class="section-header">
+        <h2>{{three_flow_title}}</h2>
+      </div>
+      <div class="timeline">{{timeline_nodes_html}}</div>
+      <div class="panel">
+        <h3>{{three_flow_synthesis_label}}</h3>
+        <p>{{three_flow_synthesis_paragraph}}</p>
       </div>
     </section>
 
     <section class="section" id="resolution-tracks">
       <div class="section-header">
         <h2>{{resolution_tracks_title}}</h2>
-        <p>{{resolution_tracks_summary}}</p>
       </div>
-      <div class="track-list">
-        <article class="track-card">
-          <header>
-            <h3>{{track_issue_number}}</h3>
-            <div class="issue-meta">{{track_issue_title}}</div>
-          </header>
-          <div class="split-list">
-            <div class="row"><div class="label">{{problem_restatement_label}}</div><div>{{track_problem_restatement}}</div></div>
-            <div class="row"><div class="label">{{root_cause_label}}</div><div>{{track_root_cause_hypothesis}}</div></div>
-            <div class="row"><div class="label">{{path_options_label}}</div><div>{{track_correction_paths}}</div></div>
-            <div class="row"><div class="label">{{recommended_direction_label}}</div><div>{{track_recommended_direction}}</div></div>
-            <div class="row"><div class="label">{{validate_next_label}}</div><div>{{track_validate_next}}</div></div>
-          </div>
-        </article>
+      <div class="three-col">
+        <div class="panel">
+          <h3>{{issue_distribution_label}}</h3>
+          <p>{{issue_distribution_paragraph}}</p>
+        </div>
+        <div class="panel">
+          <h3>{{resolution_paths_label}}</h3>
+          <p>{{resolution_paths_paragraph}}</p>
+        </div>
+        <div class="panel">
+          <h3>{{key_risk_label}}</h3>
+          <p>{{key_risk_paragraph}}</p>
+        </div>
       </div>
     </section>
 
     <section class="section">
       <div class="section-header">
         <h2>{{actions_title}}</h2>
-        <p>{{actions_summary}}</p>
       </div>
       <div class="actions-grid">
         <div class="panel" id="open-questions">

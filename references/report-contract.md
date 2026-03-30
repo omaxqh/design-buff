@@ -80,9 +80,9 @@ The final page should be self-contained and include these semantic sections:
 - `#changes-since-last-review` when this is not the first run
 - `#highest-priority-issue`
 - `#background-and-evidence`
-- `#read-coverage`
 - `#full-review`
 - `#issue-list`
+- `#three-flow-consistency`
 - `#resolution-tracks`
 - `#open-questions`
 - `#next-actions`
@@ -138,44 +138,25 @@ Render:
 - `display_number`
 - `stable_id`
 - `title`
-- `why_this_is_first`
 - `severity`
 - `confidence`
-- `evidence_basis`
-- `figma_nodes`
-- `screenshot_refs`
-- `precision_limit`
-- `what_i_see`
-- `why_it_is_a_problem`
-- `recommended_direction`
-- `correction_paths_summary`
-- `adopted_or_recommended_path`
+- one plain-language diagnosis paragraph
+- one paragraph explaining why this issue comes first
+- one paragraph explaining correction paths and recommended direction
+- one short `need to confirm` paragraph when recommendation quality depends on PM, business, or technical constraints
 
 ### Background and Evidence
 
-Render these groups:
+Render as concise prose, not process logs.
 
-- Figma intake summary
-- selected review units
-- high-precision units
-- structural-only units
-- deferred units
-- tooling boundaries
-- initial hypothesis
-- visible evidence
-- user confirmation
-- supporting materials
-- confirmed background
-- review boundaries
+Include only the parts a human reader needs in order to trust the diagnosis:
 
-### Read Coverage
+- what material was actually reviewed
+- the most relevant visible evidence
+- the reconstructed context and business goal
+- the real review boundary or tool limit when it changes the recommendation
 
-Render:
-
-- review units fully read
-- review units partially read
-- screens validated by screenshot
-- open tooling gaps
+Do not expose unit-picking mechanics, coverage bookkeeping, or tool sequencing unless the user explicitly asks for audit-style output.
 
 ### Full Review
 
@@ -183,9 +164,7 @@ Render:
 
 - top three issues in ranked order
 - issue list with designer-facing prose for each issue
-- category view
-- structural revision summary
-- continuity review
+- summary view for issue distribution, correction path grouping, and key risk
 - scenario stress test
 
 Each issue card should include:
@@ -196,30 +175,56 @@ Each issue card should include:
 - `category`
 - `severity`
 - `confidence`
-- `evidence_basis`
-- `figma_nodes`
-- `screenshot_refs`
-- `precision_limit`
-- `what_i_see`
-- `why_it_is_a_problem`
-- `what_misunderstanding_it_reveals`
-- `who_it_hurts`
-- `likely_consequence`
-- `recommended_direction`
-- `discussion_prompts`
+- one diagnosis paragraph that combines what is visible, why it matters, and what consequence it creates
+- one correction paragraph that explains what should change and why
+- one short `need to confirm` paragraph only when unresolved constraints materially affect the recommendation
+
+### Three-Flow Consistency
+
+Render this as a standalone major section immediately after `Full Review`.
+
+Purpose:
+
+- make continuity review visible instead of leaving it implied inside issue prose
+- judge whether the design works as one task chain rather than as a pile of locally correct pages
+
+Render it as one vertical timeline aligned to the main journey, not as three large flow essays.
+
+Render:
+
+- a left-side vertical timeline with 4-8 journey nodes
+- one right-side card per node
+- optional stage summary when it helps the reader place the node in the journey
+- up to three issue blocks inside the card: `journey flow`, `operation flow`, `mental flow`
+- one short synthesis paragraph on whether the three flows support each other or fight each other
+
+Each node should:
+
+- use a concrete stage title tied to the real journey, not an abstract checkpoint label
+- show only the flow blocks that actually have a meaningful problem
+- avoid filler such as `normal`, `pass`, or neutral prose when no issue exists
+
+The renderer may build a transient `timeline_nodes[]` view model for HTML output. It may contain stage titles, optional stage summaries, and optional `journey_issue`, `operation_issue`, and `mental_issue` blocks. This helper model is render-only and must not be written back into `review-state.json`.
+
+Each issue block should explain only:
+
+- a short human-readable title such as `旅程流断裂` or `操作流不清`
+- the problem
+- the fix
 
 ### Resolution Tracks
 
-For each selected issue, render:
+Do not render this as a second issue list.
 
-- problem restatement
-- root cause hypothesis
-- correction path A
-- correction path B
-- correction path C
-- recommended direction
-- revised structural proposal
-- what to validate next
+Render it as a compact summary module grouped with other full-review synthesis panels.
+
+Use it to answer:
+
+- which issues should be fixed together as one structural batch
+- what the recommended path is at a structural level
+- what the user loses if the team keeps the current design shape
+
+Keep it shorter than the issue cards and the three-flow section.
 
 ### Open Questions
 
@@ -273,6 +278,33 @@ Visual constraints:
 - use semantic headings and list structure
 - support keyboard navigation without hidden controls
 - include responsive behavior that keeps the page readable on laptop and mobile
+
+## Human Writing Rules
+
+The human report must read like an editorial design review, not like exported form fields.
+
+Required:
+
+- write issue titles and paragraphs in plain language first
+- prefer one or two strong paragraphs over six labeled micro-fields
+- keep machine identity in `stable_id`, not in unnatural title wording
+- use Chinese that sounds native to a product or design team when `report_language` is `zh-CN`
+- translate headings, subheadings, and UI labels into the selected report language
+
+Avoid:
+
+- schema-like labels such as `what i see`, `likely consequence`, `discussion prompt` in the final HTML unless the user explicitly asks for audit framing
+- direct translation of English analytical nouns when a natural Chinese sentence would be clearer
+- Chinese PM or process jargon such as `结构包` or `整改包` in the human-facing report
+- compressed phrases that hide the actor, action, or consequence
+
+Good title pattern in Chinese:
+
+- `谁在什么地方不知道什么，却被要求先做什么`
+- `页面让用户做关键决定，但没有告诉他会发生什么`
+- `成功页宣布结果了，但没有把下一步价值接住`
+
+If a line sounds like it came from a spreadsheet, schema, or machine translation, rewrite it before persisting.
 
 ## Hidden Scratch Rules
 
