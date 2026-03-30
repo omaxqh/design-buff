@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="{{report_language}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="design-buff-template" content="human-report-html-v1">
+  <title>{{project_name}} - Design Buff Review</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #efe7dc;
+      --paper: rgba(255, 251, 246, 0.92);
+      --paper-strong: #fffaf4;
+      --ink: #1f1a17;
+      --muted: #695d55;
+      --line: rgba(76, 61, 50, 0.16);
+      --accent: #a44a2f;
+      --accent-soft: rgba(164, 74, 47, 0.12);
+      --support: #275a58;
+      --support-soft: rgba(39, 90, 88, 0.12);
+      --shadow: 0 24px 72px rgba(64, 43, 28, 0.12);
+      --shadow-soft: 0 14px 36px rgba(64, 43, 28, 0.08);
+      --radius-xl: 32px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --content: min(1320px, calc(100vw - 28px));
+      --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      --sans: "Avenir Next", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+      --mono: "SFMono-Regular", "IBM Plex Mono", "Menlo", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.6;
+      background:
+        radial-gradient(circle at top left, rgba(164, 74, 47, 0.14), transparent 24%),
+        radial-gradient(circle at 88% 12%, rgba(39, 90, 88, 0.12), transparent 18%),
+        linear-gradient(180deg, #f6f0e8 0%, var(--bg) 100%);
+    }
+
+    .page {
+      width: var(--content);
+      margin: 24px auto 64px;
+      display: grid;
+      gap: 22px;
+    }
+
+    .hero,
+    .section,
+    .issue-card,
+    .track-card {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      display: grid;
+      gap: 24px;
+      grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.95fr);
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(164, 74, 47, 0.16), transparent 68%);
+      pointer-events: none;
+    }
+
+    .eyebrow,
+    .chip,
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(164, 74, 47, 0.12);
+    }
+
+    .meta-chip,
+    .chip {
+      background: rgba(255, 255, 255, 0.58);
+      color: var(--muted);
+      font-family: var(--mono);
+      letter-spacing: 0;
+    }
+
+    .hero h1 {
+      margin: 12px 0 8px;
+      font-family: var(--serif);
+      font-size: clamp(40px, 5vw, 72px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      max-width: 10ch;
+    }
+
+    .lede {
+      max-width: 60ch;
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    .hero-panel {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, rgba(255, 250, 244, 0.9), rgba(250, 243, 235, 0.82));
+      border: 1px solid rgba(76, 61, 50, 0.1);
+    }
+
+    .kicker {
+      display: grid;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .diagnosis {
+      display: grid;
+      gap: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .diagnosis strong {
+      display: block;
+      font-size: 13px;
+      font-family: var(--mono);
+      color: var(--support);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .diagnosis p {
+      margin: 0;
+      font-size: 18px;
+      color: var(--ink);
+    }
+
+    .chip-row,
+    .evidence-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .section {
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+    }
+
+    .section-header h2,
+    .priority-card h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+    }
+
+    .section-header p {
+      margin: 0;
+      max-width: 56ch;
+      color: var(--muted);
+    }
+
+    .two-col,
+    .three-col {
+      display: grid;
+      gap: 18px;
+    }
+
+    .two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .panel {
+      padding: 16px 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.52);
+      border: 1px solid rgba(76, 61, 50, 0.1);
+    }
+
+    .panel h3 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-family: var(--mono);
+      color: var(--muted);
+    }
+
+    .panel p,
+    .panel ul,
+    .panel ol {
+      margin: 0;
+    }
+
+    .priority-card {
+      display: grid;
+      gap: 18px;
+      padding: 24px;
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(145deg, rgba(255, 250, 244, 0.96), rgba(247, 237, 226, 0.92)),
+        radial-gradient(circle at 88% 14%, rgba(164, 74, 47, 0.12), transparent 34%);
+      border: 1px solid rgba(76, 61, 50, 0.14);
+      box-shadow: var(--shadow);
+    }
+
+    .priority-grid,
+    .actions-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    }
+
+    .issue-list,
+    .track-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .issue-card,
+    .track-card {
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .issue-card header,
+    .track-card header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: baseline;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+
+    .issue-card h3,
+    .track-card h3 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.05;
+    }
+
+    .issue-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .split-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .split-list .row {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: minmax(120px, 180px) minmax(0, 1fr);
+      align-items: start;
+      padding-top: 10px;
+      border-top: 1px solid rgba(76, 61, 50, 0.08);
+    }
+
+    .label {
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+
+    .ordered-actions {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      font-family: var(--mono);
+    }
+
+    @media (max-width: 1080px) {
+      .hero,
+      .priority-grid,
+      .actions-grid,
+      .two-col,
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page { width: min(100vw - 20px, 100%); margin: 12px auto 42px; }
+      .hero, .section, .issue-card, .track-card, .priority-card { padding: 18px; }
+      .hero h1 { max-width: none; }
+      .split-list .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-design-buff-report="v1">
+  <main class="page">
+    <section class="hero" id="review-overview">
+      <div>
+        <span class="eyebrow">{{report_mode_label}}</span>
+        <h1>{{project_name}}</h1>
+        <p class="lede">{{overall_diagnosis}}</p>
+        <div class="chip-row">
+          <span class="chip">slug: {{review_slug}}</span>
+          <span class="chip">date: {{review_date}}</span>
+          <span class="chip">lang: {{report_language}}</span>
+          <span class="chip">ingest: {{ingest_status}}</span>
+        </div>
+      </div>
+      <aside class="hero-panel" id="executive-summary">
+        <div class="kicker">
+          <span>reviewer: {{reviewer}}</span>
+          <span>figma: {{figma_file_key}}</span>
+          <span>node: {{figma_intake_node}}</span>
+        </div>
+        <div class="diagnosis">
+          <strong>{{verdict_label}}</strong>
+          <p>{{current_verdict}}</p>
+          <div class="evidence-row">
+            <span class="meta-chip">{{top_priority_1}}</span>
+            <span class="meta-chip">{{top_priority_2}}</span>
+            <span class="meta-chip">{{top_priority_3}}</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="changes-since-last-review">
+      <div class="section-header">
+        <h2>{{changes_title}}</h2>
+        <p>{{changes_summary}}</p>
+      </div>
+      <div class="three-col">
+        <div class="panel"><h3>{{new_issues_label}}</h3><p>{{new_issues}}</p></div>
+        <div class="panel"><h3>{{resolved_issues_label}}</h3><p>{{resolved_issues}}</p></div>
+        <div class="panel"><h3>{{changed_issues_label}}</h3><p>{{changed_issues}}</p></div>
+      </div>
+    </section>
+
+    <section class="priority-card" id="highest-priority-issue">
+      <div class="section-header">
+        <h2>{{highest_priority_title}}</h2>
+        <p>{{highest_priority_why_first}}</p>
+      </div>
+      <div class="priority-grid">
+        <div class="split-list">
+          <div class="row"><div class="label">{{issue_label}}</div><div>{{highest_priority_display_number}} · {{highest_priority_stable_id}}</div></div>
+          <div class="row"><div class="label">{{severity_label}}</div><div>{{highest_priority_severity}} · {{highest_priority_confidence}}</div></div>
+          <div class="row"><div class="label">{{evidence_label}}</div><div>{{highest_priority_evidence_basis}}</div></div>
+          <div class="row"><div class="label">{{what_i_see_label}}</div><div>{{highest_priority_what_i_see}}</div></div>
+          <div class="row"><div class="label">{{why_problem_label}}</div><div>{{highest_priority_why_it_is_a_problem}}</div></div>
+        </div>
+        <div class="panel">
+          <h3>{{recommended_direction_label}}</h3>
+          <p>{{highest_priority_recommended_direction}}</p>
+          <h3 style="margin-top:16px;">{{correction_paths_label}}</h3>
+          <p>{{highest_priority_correction_paths_summary}}</p>
+          <h3 style="margin-top:16px;">{{adopted_path_label}}</h3>
+          <p>{{highest_priority_adopted_or_recommended_path}}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="background-and-evidence">
+      <div class="section-header">
+        <h2>{{background_title}}</h2>
+        <p>{{background_summary}}</p>
+      </div>
+      <div class="two-col">
+        <div class="panel">{{background_and_evidence_html}}</div>
+        <div class="panel">{{review_boundaries_html}}</div>
+      </div>
+    </section>
+
+    <section class="section" id="read-coverage">
+      <div class="section-header">
+        <h2>{{coverage_title}}</h2>
+        <p>{{coverage_summary}}</p>
+      </div>
+      <div class="three-col">
+        <div class="panel"><h3>{{fully_read_label}}</h3><p>{{fully_read_units}}</p></div>
+        <div class="panel"><h3>{{partially_read_label}}</h3><p>{{partially_read_units}}</p></div>
+        <div class="panel"><h3>{{tool_gaps_label}}</h3><p>{{open_tooling_gaps}}</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="full-review">
+      <div class="section-header">
+        <h2>{{full_review_title}}</h2>
+        <p>{{top_issues_summary}}</p>
+      </div>
+      <div class="issue-list" id="issue-list">
+        <article class="issue-card">
+          <header>
+            <h3>{{issue_display_number}} · {{issue_title}}</h3>
+            <div class="issue-meta">{{issue_category}} · {{issue_severity}} · {{issue_confidence}}</div>
+          </header>
+          <div class="split-list">
+            <div class="row"><div class="label">{{evidence_label}}</div><div>{{issue_evidence_basis}}</div></div>
+            <div class="row"><div class="label">{{what_i_see_label}}</div><div>{{issue_what_i_see}}</div></div>
+            <div class="row"><div class="label">{{who_it_hurts_label}}</div><div>{{issue_who_it_hurts}}</div></div>
+            <div class="row"><div class="label">{{consequence_label}}</div><div>{{issue_likely_consequence}}</div></div>
+            <div class="row"><div class="label">{{recommended_direction_label}}</div><div>{{issue_recommended_direction}}</div></div>
+            <div class="row"><div class="label">{{discussion_prompts_label}}</div><div>{{issue_discussion_prompts}}</div></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="resolution-tracks">
+      <div class="section-header">
+        <h2>{{resolution_tracks_title}}</h2>
+        <p>{{resolution_tracks_summary}}</p>
+      </div>
+      <div class="track-list">
+        <article class="track-card">
+          <header>
+            <h3>{{track_issue_number}}</h3>
+            <div class="issue-meta">{{track_issue_title}}</div>
+          </header>
+          <div class="split-list">
+            <div class="row"><div class="label">{{problem_restatement_label}}</div><div>{{track_problem_restatement}}</div></div>
+            <div class="row"><div class="label">{{root_cause_label}}</div><div>{{track_root_cause_hypothesis}}</div></div>
+            <div class="row"><div class="label">{{path_options_label}}</div><div>{{track_correction_paths}}</div></div>
+            <div class="row"><div class="label">{{recommended_direction_label}}</div><div>{{track_recommended_direction}}</div></div>
+            <div class="row"><div class="label">{{validate_next_label}}</div><div>{{track_validate_next}}</div></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>{{actions_title}}</h2>
+        <p>{{actions_summary}}</p>
+      </div>
+      <div class="actions-grid">
+        <div class="panel" id="open-questions">
+          <h3>{{open_questions_title}}</h3>
+          <ol class="ordered-actions">
+            <li>{{open_question}}</li>
+          </ol>
+        </div>
+        <div class="panel" id="next-actions">
+          <h3>{{next_actions_title}}</h3>
+          <ol class="ordered-actions">
+            <li>{{next_action}}</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">{{footer_note}}</p>
+  </main>
+</body>
+</html>

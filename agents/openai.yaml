@@ -1,0 +1,12 @@
+interface:
+  display_name: "Design Buff"
+  short_description: "Run full design reviews with durable state"
+  default_prompt: "Use $design-buff to inspect this draft from product and UX angles, read Figma evidence at high precision when available, follow the bundled intake, report, and review-state contracts, and return a concise launch summary in chat."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "figma"
+      description: "Figma MCP server"
+      transport: "streamable_http"
+      url: "https://mcp.figma.com/mcp"
