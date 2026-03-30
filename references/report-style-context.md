@@ -1,17 +1,21 @@
-## Report Style Context
+## 报告风格背景
 
-### Users
-Primary readers are product designers, design leads, and AI workflow builders reviewing design drafts. They need to grasp diagnosis, evidence, priorities, and correction paths quickly without reading a wall of chat text.
+### 读者
 
-### Brand Personality
-Sharp, calm, editorial, exacting. The report should feel like a crafted critique dossier from a strong design lead rather than a dashboard, slide deck, or generic AI page.
+主要读者是产品设计师、设计 TL，以及把设计审核接进 AI 工作流的人。他们需要在不翻一大段聊天记录的前提下，快速抓住诊断、证据、优先级和修正方向。
 
-### Aesthetic Direction
-Light-first editorial report design with warm paper surfaces, strong contrast, disciplined typography, asymmetrical rhythm, and a restrained accent palette. Prefer a distinctive serif for emphasis, a crisp sans-serif for body copy, and a precise monospace accent for metadata. Avoid dark neon palettes, SaaS dashboard chrome, and generic card grids.
+### 气质
 
-### Design Principles
-- Diagnosis should surface in seconds: the strongest issue, verdict, and next moves should be obvious above the fold.
-- Evidence should feel tangible: node refs, confidence, and tooling limits need clear structure instead of getting buried in prose.
-- The page should reward deep reading: hierarchy, spacing, and contrast should support both scanning and long-form review.
-- Mixed-language content must remain elegant: Chinese is the default fallback, but the report must adapt cleanly to English or other detected primary languages.
-- The artifact must remain self-contained: one styled HTML file, no external app shell required.
+锋利、克制、编辑感、要求高。报告应该像一个强设计负责人写出来的审核 dossier，而不是仪表盘、PPT，或泛化的 AI 页面。
+
+### 视觉方向
+
+以浅色编辑型报告为主，纸面感偏暖，对比明确，排版克制，节奏不对称，强调色少而准。强调内容层级，不要做成 SaaS dashboard，也不要落入通用卡片堆叠。
+
+### 设计原则
+
+- 诊断要在几秒内浮出来：最重要的问题、当前判断和下一步动作必须首屏可见。
+- 证据要有存在感：node ref、confidence、tool limit 要有清楚结构，不能埋进大段 prose。
+- 页面要经得起深读：层级、留白和对比既服务扫读，也服务长文阅读。
+- 混合语言要保持体面：默认回退到中文，但如果主语言是英文或其他语言，也要自然适配。
+- 产物必须自包含：一个带样式的 HTML 文件就够，不依赖外部壳层。

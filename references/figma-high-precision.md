@@ -1,61 +1,61 @@
-# Figma High-Precision Read
+# Figma 高精度读取
 
-Use this playbook when a board or frame URL is available and the review requires exact text, icon semantics, or state-level judgment.
+当手上有 board 或 frame URL，且这次审核需要精确判断文案、图标语义或状态差异时，使用这份流程。
 
-## Goal
+## 目标
 
-Turn one board or frame URL into a set of reviewable screen units that are small enough to read precisely and broad enough to support product judgment.
+把一个 board 或 frame URL，拆成既足够小、能读准细节，又足够完整、能支持产品判断的一组 review units。
 
-## Intake flow
+## Intake 流程
 
-1. Normalize the intake URL.
-2. Call `get_metadata` on the intake root.
-3. Call `get_screenshot` on the intake root.
-4. Try `get_design_context` on the intake root.
-5. If the node is too large or the response is sparse metadata, split into review units.
+1. 先规范化 intake URL。
+2. 对 intake 根节点调用 `get_metadata`。
+3. 对 intake 根节点调用 `get_screenshot`。
+4. 尝试对 intake 根节点调用 `get_design_context`。
+5. 如果节点过大，或只返回稀疏 metadata，就继续拆成 review units。
 
-## Review-unit heuristics
+## Review Unit 选择启发
 
-Prefer child nodes that are:
+优先选择这些子节点：
 
-- `frame` nodes with screen-like dimensions
-- one state, one step, or one branch of the journey
-- rich in visible copy, CTA copy, form fields, or state messaging
+- 尺寸像真实页面的 `frame`
+- 代表单一状态、单一步骤或单一分支
+- 包含丰富可见文案、CTA、表单字段或状态提示
 
-Usually exclude from primary units:
+通常不应优先当主阅读单元的有：
 
-- decorative vectors
-- connector arrows
+- 装饰性矢量
+- 连线箭头
 - slices
-- giant collage wrappers
-- standalone labels that only title another screen
+- 巨大的拼贴外壳
+- 只是给别的页面做标题的独立标签
 
-## Recursive split rule
+## 递归拆分规则
 
-If a unit still returns a sparse or oversized contextual read:
+如果某个 unit 继续只返回稀疏信息，或依旧过大：
 
-- go one level deeper
-- choose the smallest child frames that still preserve one coherent task or state
-- stop only when the unit produces a useful contextual read or when no meaningful UI grouping remains
+- 再往下一层
+- 选最小、但仍然保留一个完整任务或状态语义的子 frame
+- 只有当这个 unit 能产出有用的 contextual read，或已经没有更有意义的 UI 分组时才停
 
-## Evidence ladder for micro-detail work
+## 微观细节的证据梯度
 
-- `high`: exact text, named instance, named component, or direct contextual read plus screenshot match
-- `medium`: screenshot-visible and structurally implied, but not backed by exact node naming
-- `low`: inferred from dense visuals or blocked by a tool boundary
+- `high`：拿到了精确文案、命名实例、命名组件，或直接 contextual read 与截图一致
+- `medium`：截图可见、结构上也说得通，但没有精确 node 命名支撑
+- `low`：只能从密集视觉里推断，或被工具边界挡住
 
-## Tool mismatch rule
+## 工具不一致规则
 
-If `get_metadata` and `get_design_context` can read a node but `use_figma` cannot locate it:
+如果 `get_metadata` 和 `get_design_context` 都能读到某个节点，但 `use_figma` 找不到：
 
-- treat `get_metadata + get_design_context + get_screenshot` as the primary evidence set
-- use `use_figma` only on nodes it can actually resolve
-- record the mismatch in the review instead of guessing
+- 以 `get_metadata + get_design_context + get_screenshot` 作为主证据集
+- `use_figma` 只用于它能真实解析到的节点
+- 在报告里记下这个 mismatch，不要靠猜补齐
 
-## Code Connect blocker
+## Code Connect 阻塞
 
-If `get_design_context` is interrupted by a Code Connect prompt:
+如果 `get_design_context` 因 Code Connect 提示被打断：
 
-- follow the tool instruction exactly
-- do not treat that as proof the design cannot be read
-- continue the main read path after the prompt is resolved
+- 按工具提示继续处理
+- 不要把它误判成“设计无法读取”
+- 提示处理完后，继续主读取路径

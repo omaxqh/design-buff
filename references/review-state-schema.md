@@ -1,25 +1,25 @@
 # Review State Schema
 
-Use this reference when writing or updating:
+当你要写入或更新下面这个文件时，使用这份参考：
 
 ```text
 design-buff-reviews/<review-slug>/review-state.json
 ```
 
-This file governs the machine sidecar only. Human-facing report structure and chat rules live in `report-contract.md`.
+这份文件只约束机器 sidecar。人类报告结构和对话规则看 `report-contract.md`。
 
-## Purpose
+## 用途
 
-`review-state.json` stores structured durable state so the system can:
+`review-state.json` 用来保存结构化的持久状态，让系统可以：
 
-- recover prior review state without reparsing the full HTML report
-- compare runs
-- track issue identity over time
-- render `Changes Since Last Review`
+- 不必重新解析整份 HTML，也能恢复上次评审状态
+- 比较不同轮次的结果
+- 持续追踪问题身份
+- 渲染 `Changes Since Last Review`
 
-It is not a second human-facing report.
+它不是第二份人类报告。
 
-## v1 Top-Level Shape
+## v1 顶层结构
 
 ```json
 {
@@ -35,17 +35,17 @@ It is not a second human-facing report.
 }
 ```
 
-## v1 Field Specification
+## v1 字段说明
 
 ### `schema_version`
 
 - required: yes
 - type: `string`
-- value in v1: `"v1"`
+- v1 固定值: `"v1"`
 
 ### `meta`
 
-Run identity and compatibility metadata.
+运行身份和兼容性元数据。
 
 - `project_name`: `string`, optional
 - `review_slug`: `string`, required
@@ -63,7 +63,7 @@ Run identity and compatibility metadata.
 
 ### `intake`
 
-Normalized intake state and selected review scope.
+规范化后的 intake 状态和本轮选择的审核范围。
 
 - `source_artifacts`: `array<string>`, required
 - `figma_intake_url`: `string | null`, optional
@@ -79,7 +79,7 @@ Normalized intake state and selected review scope.
 
 ### `coverage`
 
-Read coverage and validation coverage.
+读取覆盖和验证覆盖。
 
 - `fully_read_unit_ids`: `array<string>`, required
 - `partially_read_unit_ids`: `array<string>`, required
@@ -88,7 +88,7 @@ Read coverage and validation coverage.
 
 ### `background`
 
-Structured background state only. Keep human-facing narrative out of this object.
+这里只存结构化背景状态，不写面向人的长 prose。
 
 - `page_type`: `string | null`, optional
 - `product_type`: `string | null`, optional
@@ -97,16 +97,16 @@ Structured background state only. Keep human-facing narrative out of this object
 - `core_scenario`: `string | null`, optional
 - `business_goal`: `string | null`, optional
 - `workflow_position`: `string | null`, optional
-- `summary`: `string | null`, optional, short structured summary only
+- `summary`: `string | null`, optional，只允许短结构摘要
 - `assumptions`: `array<string>`, required
 - `unknowns`: `array<string>`, required
 - `confidence`: `string | null`, optional
 
 ### `evidence`
 
-Evidence ledger. Every item must be machine-usable.
+证据台账。每一项都必须对机器可用。
 
-Each item includes:
+每项包含：
 
 - `evidence_id`: `string`, required
 - `source_type`: `string`, required
@@ -119,40 +119,40 @@ Each item includes:
 
 ### `issues`
 
-Structured issue state. Stable issue identity behavior is defined in `review-playbook.md`; this file only defines the machine fields.
+结构化问题状态。稳定问题身份的行为规则定义在 `review-playbook.md`；这里只定义机器字段。
 
-Each item includes:
+每项包含：
 
 - `stable_id`: `string`, required
-- `display_number`: `string`, required, example `ISSUE-001`
+- `display_number`: `string`, required，例如 `ISSUE-001`
 - `title`: `string`, required
 - `category`: `string`, required
 - `severity`: `string`, required
 - `confidence`: `string`, required
-- `status`: `string`, required, recommended `active | resolved | changed | deferred`
+- `status`: `string`, required，推荐 `active | resolved | changed | deferred`
 - `evidence_ids`: `array<string>`, required
-- `problem_summary`: `string | null`, optional, short machine summary only
-- `impact_summary`: `string | null`, optional, short machine summary only
-- `recommendation_summary`: `string | null`, optional, short machine summary only
+- `problem_summary`: `string | null`, optional，只允许短机器摘要
+- `impact_summary`: `string | null`, optional，只允许短机器摘要
+- `recommendation_summary`: `string | null`, optional，只允许短机器摘要
 - `discussion_prompts`: `array<string>`, required
 
 ### `priorities`
 
-Structured priority state.
+结构化优先级状态。
 
 - `highest_priority_issue_id`: `string | null`, optional
 - `top_issue_ids`: `array<string>`, required
 - `open_questions`: `array<object>`, required
 - `next_actions`: `array<object>`, required
 
-Each `open_questions` item includes:
+每个 `open_questions` 项包含：
 
 - `question_id`: `string`
 - `title`: `string`
 - `status`: `string`
 - `related_issue_ids`: `array<string>`
 
-Each `next_actions` item includes:
+每个 `next_actions` 项包含：
 
 - `action_id`: `string`
 - `title`: `string`
@@ -161,7 +161,7 @@ Each `next_actions` item includes:
 
 ### `history`
 
-Structured review diff state.
+结构化的评审 diff 状态。
 
 - `previous_run_id`: `string | null`, optional
 - `previous_review_date`: `string | null`, optional
@@ -171,28 +171,28 @@ Structured review diff state.
 - `severity_changed_issue_ids`: `array<string>`, required
 - `recommendation_changed_issue_ids`: `array<string>`, required
 
-## Forbidden Content
+## 禁止写入的内容
 
-Do not store:
+不要存这些东西：
 
-- executive summary prose
-- full issue prose
-- `why_it_is_a_problem` long-form text
-- complete human-facing recommendation paragraphs
-- any text block that could be mistaken for the formal review report
+- executive summary 正文
+- 完整问题 prose
+- `why_it_is_a_problem` 这种长段解释
+- 面向人的完整 recommendation 段落
+- 任何可能被误认成正式评审报告的长文本
 
-Rule of thumb:
+经验法则：
 
-- if a field helps the system resume, compare, or track, it belongs here
-- if a field mainly exists to persuade or explain to a human reader, it belongs in `report.html`
+- 如果一个字段是为了让系统恢复、比较或追踪，它应该放这里
+- 如果一个字段主要是为了说服或解释给人听，它应该进 `report.html`
 
-## Minimal Example
+## 最小示例
 
 ```json
 {
   "schema_version": "v1",
   "meta": {
-    "project_name": "Example Review",
+    "project_name": "示例评审",
     "review_slug": "example-review",
     "report_mode": "self-check",
     "review_date": "2026-03-27",
@@ -226,16 +226,16 @@ Rule of thumb:
     "open_tooling_gaps": []
   },
   "background": {
-    "page_type": "mobile modal flow",
-    "product_type": "membership binding flow",
-    "industry": "travel",
-    "target_user": "high-intent loyalty users",
-    "core_scenario": "choose the correct path and complete account linking",
-    "business_goal": "increase successful account binding",
-    "workflow_position": "late-stage conversion",
-    "summary": "membership opening and linking flow",
-    "assumptions": ["user may not know account status"],
-    "unknowns": ["real callback behavior"],
+    "page_type": "移动端弹层流程",
+    "product_type": "会员绑定流程",
+    "industry": "旅行",
+    "target_user": "高意图的权益用户",
+    "core_scenario": "选对路径并完成账号互通",
+    "business_goal": "提升成功绑定率",
+    "workflow_position": "转化后段",
+    "summary": "会员开通与绑定流程",
+    "assumptions": ["用户可能并不知道自己的账号状态"],
+    "unknowns": ["真实回调行为"],
     "confidence": "medium-high"
   },
   "evidence": [
@@ -254,16 +254,16 @@ Rule of thumb:
     {
       "stable_id": "routing-self-diagnosis__90f948",
       "display_number": "ISSUE-001",
-      "title": "Users must choose open vs bind before they know whether they already have a Marriott account",
+      "title": "用户还不知道自己是否有万豪账号，却必须先选开通还是绑定",
       "category": "scenario and fit",
       "severity": "high",
       "confidence": "high",
       "status": "active",
       "evidence_ids": ["ev_001"],
-      "problem_summary": "entry routing asks users to infer backend state",
-      "impact_summary": "causes wrong-path failure and trust loss",
-      "recommendation_summary": "prefer system routing or a clear uncertainty path",
-      "discussion_prompts": ["Can the system check account status after authorization?"]
+      "problem_summary": "入口分流要求用户先推断后台状态",
+      "impact_summary": "容易走错路，失败后还会伤害信任",
+      "recommendation_summary": "优先系统自动判路，或至少提供明确的不确定路径",
+      "discussion_prompts": ["授权后系统能否先检查账号状态？"]
     }
   ],
   "priorities": {
@@ -272,7 +272,7 @@ Rule of thumb:
     "open_questions": [
       {
         "question_id": "q_001",
-        "title": "Can the system check account status after authorization?",
+        "title": "授权后系统能否先检查账号状态？",
         "status": "open",
         "related_issue_ids": ["routing-self-diagnosis__90f948"]
       }
@@ -280,7 +280,7 @@ Rule of thumb:
     "next_actions": [
       {
         "action_id": "a_001",
-        "title": "Rewrite the first decision step so users do not have to guess their account state",
+        "title": "重写首步判路，不再让用户自己猜账号状态",
         "status": "pending",
         "related_issue_ids": ["routing-self-diagnosis__90f948"]
       }

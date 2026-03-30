@@ -5,11 +5,21 @@ from __future__ import annotations
 import argparse
 import os
 import shutil
+import tempfile
 from pathlib import Path
 
 
 BEGIN_MARKER = "<!-- design-buff:begin -->"
 END_MARKER = "<!-- design-buff:end -->"
+CODEX_ALLOWLIST = [
+    "SKILL.md",
+    "agents",
+    "references",
+    "scripts",
+    "templates",
+    "LICENSE",
+    ".gitignore",
+]
 
 
 def repo_root() -> Path:
@@ -76,9 +86,45 @@ def render_agents_block(portable: str) -> str:
     return wrap_managed_block("Design Buff", intro + portable)
 
 
-def copy_repo_tree(source: Path, destination: Path) -> None:
-    ignore = shutil.ignore_patterns(".git", ".DS_Store", "__pycache__", "*.pyc", ".pytest_cache")
-    shutil.copytree(source, destination, dirs_exist_ok=True, ignore=ignore)
+def render_codex_runtime_readme() -> str:
+    return """# Design Buff
+
+`Design Buff` 是一个面向业务与体验的设计审核 skill，不是审美打分器。它会根据 Figma、截图、页面结构和补充材料，还原这条设计到底服务谁、要完成什么任务、处在链路的哪一步，再判断真正的问题是不是出在结构、认知成本、信任建立或连续性上。
+
+## 这个 Skill 用来做什么
+
+- 设计师自查和方案复盘
+- 关键转化流程的体验诊断
+- Figma、截图、PRD 混合输入下的设计审核
+- 发现页面局部没错、但整条链路不顺的结构问题
+
+## 在 Codex 里怎么触发
+
+- 直接在对话里写明你的设计审核需求，并附上 Figma、截图或相关材料
+- 想明确点名时，直接写 `$design-buff`
+- 如果已经有同一条方案的旧评审，继续沿用同一个 `review-slug`
+
+## 会生成什么
+
+- 人看的报告：`design-buff-reviews/<review-slug>/report.html`
+- 机器状态：`design-buff-reviews/<review-slug>/review-state.json`
+- 临时技术状态：`.design-buff/<review-slug>/`
+
+`report.html` 是正式的人类评审报告；`review-state.json` 只用于结构化追踪、复跑和对比，不是第二份报告。
+"""
+
+
+def copy_allowed_entries(source: Path, destination: Path, allowlist: list[str]) -> None:
+    for entry in allowlist:
+        src = source / entry
+        dst = destination / entry
+        if not src.exists():
+            continue
+        if src.is_dir():
+            shutil.copytree(src, dst)
+        else:
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst)
 
 
 def default_codex_skill_dir() -> Path:
@@ -88,9 +134,23 @@ def default_codex_skill_dir() -> Path:
 
 
 def install_codex(root: Path, target: Path | None) -> list[Path]:
-    destination = target if target is not None else default_codex_skill_dir()
+    destination = (target if target is not None else default_codex_skill_dir()).resolve()
+    root = root.resolve()
+    if destination == root:
+        raise SystemExit("Codex 默认安装位当前正指向这个仓库本身。无需覆盖仓库；如需验证或生成精简运行包，请改用 --target 指到别的目录。")
     destination.parent.mkdir(parents=True, exist_ok=True)
-    copy_repo_tree(root, destination)
+
+    with tempfile.TemporaryDirectory(prefix="design-buff-codex-", dir=destination.parent) as tmpdir:
+        staging = Path(tmpdir) / "design-buff"
+        staging.mkdir(parents=True, exist_ok=True)
+        copy_allowed_entries(root, staging, CODEX_ALLOWLIST)
+        write_text(staging / "README.md", render_codex_runtime_readme())
+
+        if destination.exists():
+            if destination.is_file():
+                raise SystemExit(f"目标路径已存在且不是目录：{destination}")
+            shutil.rmtree(destination)
+        shutil.move(str(staging), str(destination))
     return [destination]
 
 

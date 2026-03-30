@@ -1,120 +1,120 @@
-# Review Playbook
+# 审核手册
 
-Use this reference when reconstructing background, judging the design, writing issues, or turning diagnosis into correction paths.
+当你需要重建背景、判断设计、撰写问题，或把诊断继续推进成修正路径时，使用这份参考。
 
-## Goal
+## 目标
 
-Figure out what the design is trying to do before judging how well it does it, then push the critique toward structural correction rather than decorative advice.
+先搞清楚这份设计到底想解决什么，再判断它做得好不好；并且把审核重心推向结构修正，而不是停在装饰性建议上。
 
-## Background Reconstruction
+## 背景重建
 
-Infer and then validate:
+先推断，再确认这些信息：
 
-- page or flow type
-- product type
-- likely industry
-- target user
-- core scenario
-- business goal
-- workflow or funnel position
-- assumptions
-- unknowns
+- 页面或流程类型
+- 产品类型
+- 所处行业
+- 目标用户
+- 核心场景
+- 业务目标
+- 工作流或转化链路中的位置
+- 当前假设
+- 当前未知项
 
-## Evidence Sources
+## 证据来源
 
-Prefer stronger evidence first:
+优先用更强的证据：
 
-1. user-confirmed context
-2. PRD, product docs, or research
-3. Figma structural data
-4. screenshots or exports
-5. model inference
+1. 用户确认过的上下文
+2. PRD、产品文档或研究资料
+3. Figma 结构化数据
+4. 截图或导出图
+5. 模型推断
 
-Useful signals:
+常见可用信号：
 
-- page titles and visible copy
-- CTA wording
-- field labels and table columns
-- navigation structure
-- trust or risk cues
-- status labels
-- component hierarchy
-- prototype links
-- variable naming and token usage
+- 页面标题和可见文案
+- CTA 文案
+- 字段标签和表格列名
+- 导航结构
+- 信任或风险提示
+- 状态标签
+- 组件层级
+- 原型链接
+- 变量命名和 token 使用
 
-When the evidence is screenshot-only or partial:
+当证据只有截图，或材料明显不完整时：
 
-- lower confidence instead of faking precision
-- record the exact boundary
-- keep the critique focused on what is actually visible
+- 下调置信度，不要假装精确
+- 明确写出证据边界
+- 审核只针对真正看得到的内容展开
 
-## Confirmation Pass
+## 确认回合
 
-After the first reconstruction pass, confirm or correct:
+第一次背景重建后，再确认或修正这些判断：
 
-- who this is for
-- what task the user is trying to complete
-- what business outcome the design is meant to drive
-- what constraints or domain rules are not visible in the draft
+- 这份设计服务谁
+- 用户此刻在尝试完成什么任务
+- 这条设计想推动什么业务结果
+- 草稿里看不到、但真实存在的约束或行业规则
 
-## Critique Dimensions
+## 审核维度
 
-Review the draft across these dimensions:
+从这些维度看设计：
 
-1. `problem and value`
-2. `users and insight`
-3. `scenario and fit`
-4. `user mental models and habits`
-5. `cognitive and operational cost`
-6. `industry baseline and alternatives`
-7. `foundational experience checks`
+1. `问题与价值`
+2. `用户与洞察`
+3. `场景匹配`
+4. `用户心智与习惯`
+5. `认知与操作成本`
+6. `行业基线与替代路径`
+7. `基础体验检查`
 
-## Mandatory Passes
+## 必跑检查
 
-Always run these passes on the most important path:
+至少在最重要的任务路径上跑这些检查：
 
-- `cognitive and copy load check`
-- `three-flow continuity review` across journey flow, operation flow, and mental flow
-- `scenario stress test` against the most relevant failure or pressure cases
-- `micro-detail pass` when wording, icon semantics, or state coverage matters
+- `认知与文案负担检查`
+- `three-flow continuity review`，也就是旅程流、操作流、心智流的一致性检查
+- `场景压力测试`，针对最关键的失败或压力场景
+- 当文案、图标语义、状态覆盖重要时，再补 `微观细节检查`
 
-### Three-Flow Continuity Review
+### 三流一致性检查
 
-For at least one key task path, explicitly inspect whether these three flows stay aligned:
+至少选一条关键任务链，显式检查这三条流是否保持一致：
 
-- `journey flow`: whether the macro task path still holds from entry to outcome
-- `operation flow`: whether each concrete action and system response stays clear and continuous
-- `mental flow`: whether user understanding, certainty, and trust keep moving forward instead of collapsing mid-path
+- `旅程流`：从进入到结果，整条大链路是否还成立
+- `操作流`：当前每一步动作和系统反馈是否清楚、连续
+- `心智流`：用户理解、确定感和信任感是否在往前走，而不是中途崩掉
 
-This pass exists to catch continuity failures that do not show up when pages are judged one by one.
+这一步是为了抓住那种“单页看都没错，但整条链就是断的”问题。
 
-Check:
+重点看：
 
-- whether the design is locally correct page by page but broken as one complete task chain
-- whether the macro path holds, the concrete actions stay smooth, and the user feels more certain rather than less certain
-- whether the three flows support each other or work against each other
-- exactly where the break happens and what kind of break it is
+- 设计是不是每一页都局部正确，但拼起来却不是一条能走通的任务链
+- 大链路是否成立，具体动作是否顺，用户是不是越走越确定
+- 三条流是在互相支撑，还是互相打架
+- 断裂发生在哪一步，断的是哪一层
 
-For complex flows, review 2-3 key paths. Do not map every page exhaustively unless the user asks for that level of audit.
+复杂流程可以看 2 到 3 条关键路径。除非用户明确要求，不要把每一页都做成穷举式审计。
 
-In the human HTML report, prefer one stage-aligned vertical timeline over three long abstract flow cards. Each node should write only the real issue blocks that matter, and each block should say `problem + fix` in plain language.
+在人类 HTML 报告里，优先用“对齐真实阶段的纵向时间轴”，而不是三张抽象长卡。每个节点只写真正存在的问题块，每个问题块都用“问题 + 解法”的人话表达。
 
-## Human Issue Anatomy
+## 人类问题结构
 
-Each issue should be strong enough to support designer-facing review and machine-side tracking.
+每个问题既要能支撑设计师阅读，也要能支撑机器追踪。
 
-Keep both:
+必须同时保留：
 
-- a `stable_id` for tracking and diff
-- a display label such as `ISSUE-001` for human reading
+- 用于追踪和 diff 的 `stable_id`
+- 方便人看的显示编号，比如 `ISSUE-001`
 
-Each issue should at minimum cover:
+每个问题至少要覆盖这些信息：
 
 - `title`
 - `category`
 - `severity`
 - `confidence`
-- `evidence_ids` or equivalent evidence basis
+- `evidence_ids` 或等价证据依据
 - `what_i_see`
 - `why_it_is_a_problem`
 - `what_misunderstanding_it_reveals`
@@ -123,108 +123,108 @@ Each issue should at minimum cover:
 - `recommended_direction`
 - `discussion_prompts`
 
-## Human Writing Rules
+## 人类写作规则
 
-The machine object may stay structured. The HTML report must not read like the schema.
+机器对象可以保持结构化，但 HTML 报告绝不能写成 schema 原样外露的样子。
 
-### Title Rules
+### 标题规则
 
-Issue titles are for human reading first and tracking second.
+问题标题先服务于人读懂，再服务于追踪。
 
-- write the title so a designer can understand it on first read
-- prefer concrete subject + concrete problem + visible consequence
-- in Chinese, prefer natural subject-verb-object phrasing over compressed abstract nouns
-- if a title needs explanation before it becomes understandable, rewrite it
-- keep `stable_id` responsible for machine precision; do not force the title to do machine work
+- 标题要让设计师第一眼就能明白
+- 优先写“具体对象 + 具体问题 + 可见后果”
+- 中文里优先自然的主谓宾，而不是压缩的抽象名词堆叠
+- 如果一个标题必须先解释，才变得能读懂，那它就该重写
+- `stable_id` 负责机器精确，不要逼标题同时承担机器工作
 
-Avoid titles like:
+避免这类标题：
 
 - `首步路径选择依赖用户自诊断账号状态`
 - `分流策略与用户心智存在错位`
 - `认知负担过重`
 
-Prefer titles like:
+优先写成：
 
 - `用户可能不知道自己是否注册过万豪，却必须先选开通还是绑定`
 - `页面把业务分流直接丢给用户判断，选错后要到失败页才发现`
 - `协议页把必选授权和营销偏好混在一起，用户很难一眼分清`
 
-### Paragraph Rules
+### 段落规则
 
-For the human report:
+对人类报告来说：
 
-- do not expose `what_i_see`, `who_it_hurts`, `likely_consequence`, `discussion_prompts` as rigid field labels by default
-- combine them into one causal paragraph that explains what is happening, why it matters, and who is affected
-- follow with one paragraph that explains the correction direction in plain language
-- merge discussion prompts into a short `需要确认` paragraph when they materially affect the recommendation
-- keep evidence visible, but do not let node IDs and tool steps dominate the reading flow
+- 不要默认把 `what_i_see`、`who_it_hurts`、`likely_consequence`、`discussion_prompts` 这些字段名直接露出来
+- 把它们合并成一个有因果关系的诊断段落，讲清楚发生了什么、为什么重要、影响谁
+- 再补一个修正段落，说明应该怎么改、为什么这么改
+- 当讨论问题会实质影响建议时，把它压成一个短的 `需要确认` 段落
+- 证据要可见，但不要让 node ID 和工具步骤统治阅读节奏
 
-### Chinese Writing Rules
+### 中文写作规则
 
-When the report language is `zh-CN`:
+当报告语言是 `zh-CN`：
 
-- write like a strong Chinese-speaking design lead, not like translated English analysis
-- prefer short complete sentences over stacked modifier phrases
-- prefer user-known facts over internal product taxonomy
-- explain abstract UX terms through visible behavior
-- use terminology only when it helps, not as a substitute for explanation
-- do not use PM jargon such as `结构包` or `整改包` in the human-facing report
+- 写得像一个中文语境下的强设计负责人，而不是英文分析文的翻译稿
+- 优先短而完整的句子，不要堆太多修饰语
+- 优先用户能理解的事实，不要沉迷内部术语
+- 抽象 UX 词要落到可见行为上去解释
+- 术语只在真有帮助时用，不要拿术语顶替解释
+- 人类报告里不要出现 `结构包`、`整改包` 这类 PM 腔
 
-Examples:
+例如：
 
-- instead of `用户自诊断账号状态`, write `用户要先自己判断自己到底算未注册还是已注册`
-- instead of `路径分流`, write `先选开通还是绑定`
-- instead of `认知负担`, write `用户得自己多想一步，而且很容易想错`
+- 不写 `用户自诊断账号状态`，改写成 `用户得先自己判断自己到底算未注册还是已注册`
+- 不写 `路径分流`，改写成 `先选开通还是绑定`
+- 不写 `认知负担`，改写成 `用户得自己多想一步，而且很容易想错`
 
-## Severity Guidance
+## 严重度参考
 
-- `critical`: blocks task success, creates serious trust risk, or reveals a strategic misread
-- `high`: causes likely failure, confusion, abandonment, or expensive rework
-- `medium`: weakens understanding, efficiency, or confidence but does not fully block the task
-- `low`: noticeable but not central to the outcome
+- `critical`：直接挡住任务完成、产生严重信任风险，或暴露战略级判断错误
+- `high`：大概率造成失败、困惑、放弃，或带来高成本返工
+- `medium`：削弱理解、效率或信心，但不至于完全卡死任务
+- `low`：能感觉到问题，但不是结果的核心决定因素
 
-## Confidence Guidance
+## 置信度参考
 
-- `high`: exact copy or node evidence plus screenshot confirmation
-- `medium`: visible and structurally implied, but not backed by exact node-level evidence
-- `low`: inferred from partial visuals, sparse reads, or a tooling boundary
+- `high`：有精确文案或节点证据，并且截图也确认了
+- `medium`：可见、结构上也说得通，但没有精确到节点级的证据支撑
+- `low`：只能从局部视觉、稀疏读取或工具边界里推断
 
-## Stable Issue Identity
+## 稳定问题标识
 
-- internal logic must use `stable_id`, not display labels
-- stable IDs should be mixed-format: readable semantic fragment plus stable suffix
-- display labels may reorder between runs
-- stable IDs must not change merely because display order changed
-- continuing issues, resolved issues, and materially changed issues should all be tracked through `stable_id`
+- 内部逻辑必须依赖 `stable_id`，不要依赖显示编号
+- `stable_id` 应该是混合格式：可读语义片段 + 稳定后缀
+- 显示编号可以在复跑后重排
+- 仅仅因为显示顺序变化，`stable_id` 不应变化
+- 持续存在的问题、已解决的问题、发生实质变化的问题，都应通过 `stable_id` 追踪
 
-## Resolution Sequence
+## 修正顺序
 
-For the selected issue:
+针对用户选中的问题，按这个顺序推进：
 
-1. restate the true problem
-2. identify the likely root cause
-3. propose 2-3 correction paths
-4. explain tradeoffs
-5. recommend one direction
-6. define what should be validated next
+1. 重述真正的问题
+2. 判断最可能的根因
+3. 给出 2 到 3 条修正路径
+4. 解释取舍
+5. 推荐一个方向
+6. 定义下一轮要验证什么
 
-## Root Cause Prompts
+## 根因追问
 
-Ask which layer is actually broken:
+问清楚到底是哪一层断了：
 
-- wrong problem framing
-- wrong user assumption
-- wrong scenario assumption
-- wrong information hierarchy
-- wrong sequencing
-- wrong interaction contract
-- missing state or recovery path
-- copy or terminology drift
+- 问题定义错了
+- 用户假设错了
+- 场景假设错了
+- 信息层级错了
+- 先后顺序错了
+- 交互契约错了
+- 缺少状态或恢复路径
+- 文案或术语漂移了
 
-## Review Posture
+## 审核姿态
 
-- default to product and UX rationality, not style commentary
-- challenge the problem before endorsing the solution
-- prefer structural correction over decorative correction
-- distinguish what is visible from what is inferred
-- if the biggest issue is strategic, say it before discussing page details
+- 默认从产品和体验合理性出发，不从风格好不好看出发
+- 在认可方案前先挑战问题定义
+- 优先给结构修正，不优先给装饰修正
+- 明确区分可见事实和推断
+- 如果最大的问题是战略层面的，就先说战略问题，再说页面细节

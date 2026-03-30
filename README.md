@@ -120,7 +120,8 @@ python3 scripts/install_adapter.py codex
 
 - 默认安装到 `${CODEX_HOME:-~/.codex}/skills/design-buff`
 - 如果你想装到自定义位置，可加 `--target /path/to/skills/design-buff`
-- 这条命令会复制完整 Skill 包，而不是只写一段规则文本
+- 这条命令会生成一个精简运行包，只保留 Codex 真正运行需要的文件
+- 运行包不会带上 `adapters/`、跨平台说明或仓库维护层残留
 
 使用方式:
 
