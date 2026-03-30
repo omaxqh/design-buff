@@ -59,6 +59,19 @@ Design Buff 会输出一套人机分账、各司其职的评审结果：
 
 仓库里的 `README.md` 只是 GitHub 入口说明。真正的运行合同和流程约束，以 `SKILL.md` 以及 `references/` 下的文件为准。
 
+## 跨平台适配
+
+除了 Codex 原生 Skill 形态，这个仓库现在还提供了面向主流 Agent CLI / IDE 的轻量适配层，目标是让同一套评审方法可以落到不同运行时，而不是为每个平台重新写一份漂移 prompt。
+
+当前支持:
+
+- `Codex`: 直接使用原生 `SKILL.md`
+- `Claude Code`: 通过 `CLAUDE.md` 和 `.claude/commands/`
+- `Cursor IDE`: 通过 `.cursor/rules/*.mdc`
+- `Cursor CLI` 与其他兼容 Agent: 通过项目根目录 `AGENTS.md`
+
+适配相关文件位于 `adapters/`，安装脚本位于 `scripts/install_adapter.py`。详细说明见 `adapters/README.md`。
+
 ## 适合用来审什么
 
 - 带业务目标的转化流程
@@ -86,6 +99,7 @@ Design Buff 会输出一套人机分账、各司其职的评审结果：
 ├── README.md
 ├── LICENSE
 ├── .gitignore
+├── adapters/
 ├── agents/
 ├── references/
 ├── scripts/
@@ -97,6 +111,24 @@ Design Buff 会输出一套人机分账、各司其职的评审结果：
 1. 把整个文件夹复制到你的 Codex skills 目录，并命名为 `design-buff`。
 2. 运行时保持 Skill 包本身只读，不要把评审产物写回这个仓库。
 3. 使用时从被评审项目的根目录发起，而不是从 Skill 仓库内部运行。
+
+### 安装到 Claude Code / Cursor
+
+如果你想把 Design Buff 装到其他 Agent CLI 或 IDE，可直接运行:
+
+```bash
+python3 scripts/install_adapter.py claude-code --scope project --target /path/to/project
+python3 scripts/install_adapter.py claude-code --scope user
+python3 scripts/install_adapter.py cursor --target /path/to/project
+python3 scripts/install_adapter.py generic-agents --target /path/to/project
+```
+
+这四条命令分别对应:
+
+- 给某个项目安装 Claude Code 版本
+- 给当前用户安装 Claude Code 版本
+- 给某个项目安装 Cursor IDE 规则
+- 给某个项目安装通用 `AGENTS.md` 入口
 
 ## 运行产物
 
