@@ -89,6 +89,8 @@ def render_agents_block(portable: str) -> str:
 def render_codex_runtime_readme() -> str:
     return """# Design Buff
 
+这是给 `Codex` 直接安装使用的最小运行仓库，不是维护源码仓库。
+
 `Design Buff` 是一个面向业务与体验的设计审核 skill，不是审美打分器。它会根据 Figma、截图、页面结构和补充材料，还原这条设计到底服务谁、要完成什么任务、处在链路的哪一步，再判断真正的问题是不是出在结构、认知成本、信任建立或连续性上。
 
 ## 这个 Skill 用来做什么
@@ -100,6 +102,7 @@ def render_codex_runtime_readme() -> str:
 
 ## 在 Codex 里怎么触发
 
+- 如果你是让 AI 直接按 GitHub URL 安装，这个仓库本身就可以直接安装
 - 直接在对话里写明你的设计审核需求，并附上 Figma、截图或相关材料
 - 想明确点名时，直接写 `$design-buff`
 - 如果已经有同一条方案的旧评审，继续沿用同一个 `review-slug`
