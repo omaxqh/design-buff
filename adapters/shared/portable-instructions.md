@@ -114,8 +114,10 @@ If file output is not available, keep the same review logic in chat and state th
 Rendering guardrails:
 
 - keep the fixed report section ids: `review-overview`, `executive-summary`, `highest-priority-issue`, `background-and-evidence`, `full-review`, `issue-list`, `three-flow-consistency`, `resolution-tracks`, `open-questions`, `next-actions`
+- write constrained content slots first, then render the final `report.html` through `scripts/render_report.py`; do not improvise a fresh HTML shell
 - if the report language is Chinese, keep section titles, labels, chips, and helper text in Chinese too; do not leave English scaffolding such as `Executive Summary`, `Issue List`, `Resolution Tracks`, `Project`, or `Review Slug`
 - show stable issue identifiers in the human report as well as display numbers
+- do not invent new classes, CSS, or alternate section compositions such as `hero-side`, stacked-only `timeline-card` lists, `tracks/track-card`, or separate `open-questions` and `next-actions` sections
 - if the full repository or validator script is available, run the contract validator after writing and repair until it passes
 
 ## Three-Flow Continuity Review

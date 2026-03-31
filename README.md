@@ -177,6 +177,8 @@ python3 scripts/install_adapter.py generic-agents --target /path/to/project
 
 这两个目录都属于被评审项目，不属于 Skill 包本身。
 
+从这版开始，正式 `report.html` 应通过固定模板和 `scripts/render_report.py` 渲染；模型只负责受限内容槽位，不再自由拼接另一套 HTML shell。
+
 ## 技术依赖
 
 - 支持 Skill 加载的 Codex 运行环境
