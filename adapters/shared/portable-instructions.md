@@ -50,6 +50,13 @@ Do not present guesses as conclusions.
 - if a prior review exists, load it before starting a fresh pass
 - prefer the smallest review unit that answers the current question
 
+### Report Mode
+
+- default to `self-check`
+- switch to `agent-review` only when the user explicitly wants machine-first handoff or the primary audience is another agent / automation step
+- being inside an agent runtime, IDE, or CLI is not enough to justify `agent-review`
+- reviewing an AI-generated draft is also not enough by itself; if human designers are still the main readers, stay in `self-check`
+
 ### 2. Collect Evidence
 
 - if the runtime supports Figma or MCP, read structure first and screenshots second
@@ -89,6 +96,7 @@ Mandatory passes:
 - keep one canonical review object behind every output
 - do not let the human HTML report become the internal schema
 - keep issue IDs stable enough for reruns and comparison
+- the HTML report and structured sidecar must come from the same review object, not two separately improvised summaries
 
 ### 6. Render Outputs
 
@@ -102,6 +110,13 @@ Optional technical scratch can live under:
 - `.design-buff/<review-slug>/`
 
 If file output is not available, keep the same review logic in chat and state the persistence limit explicitly.
+
+Rendering guardrails:
+
+- keep the fixed report section ids: `review-overview`, `executive-summary`, `highest-priority-issue`, `background-and-evidence`, `full-review`, `issue-list`, `three-flow-consistency`, `resolution-tracks`, `open-questions`, `next-actions`
+- if the report language is Chinese, keep section titles, labels, chips, and helper text in Chinese too; do not leave English scaffolding such as `Executive Summary`, `Issue List`, `Resolution Tracks`, `Project`, or `Review Slug`
+- show stable issue identifiers in the human report as well as display numbers
+- if the full repository or validator script is available, run the contract validator after writing and repair until it passes
 
 ## Three-Flow Continuity Review
 
@@ -149,3 +164,5 @@ If the full Design Buff repository is available, these files remain the source o
 - `references/review-playbook.md`
 - `references/report-contract.md`
 - `references/review-state-schema.md`
+- `references/report-style-context.md`
+- `templates/report-shell.html`
